@@ -1,0 +1,91 @@
+%--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+% TACO TRUMP ANIMATED
+%--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+SAVE 					% save RPL
+
+LA 00000				% increment
+R1=A A
+LA 00002				% global n loops
+
+*LOOP
+R0=A A
+
+GOSBVL 2677C				% "D0->Row1"
+AD0EX
+
+
+R2=C A
+
+C=R1 A
+C=C+272 A			% vertical offset ( 34 * 8 )
+C=C+6 A				% horizontal offset
+R1=C A
+
+A=A+C A				% apply vertical & horizontal offsets
+
+C=R2 A
+
+A+340 A				% go down 34 *10 (START)
+
+AD0EX
+GOSUB Data1
+
+NIBHEX 451434F4
+*Data1
+C=RSTK 					% SE
+
+D1=C 					% point to characters
+
+LC 00000				% offset of the text
+B=C A 					
+LC 00022				% width (#22h)
+D=C A					
+LC 00004 				% n characters
+
+GOSBVL 266B1
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+GOSBVL 2677C				% "D0->Row1"
+AD0EX
+A+1452 A				% go down 340 + 4*(272+6)
+AD0EX
+GOSUB Data2
+
+NIBHEX 452555D40580
+
+*Data2
+C=RSTK 					% SE
+
+D1=C 					% point to characters
+
+LC 00000				% offset of the text
+B=C A 					
+LC 00022				% width (#22h)
+D=C A					
+LC 00005 				% n characters
+
+GOSBVL 266B1 				% display the text in the screen ( $5x7 )
+
+LC B0000
+*Wait
+C+1 A
+GONC Wait
+
+
+A=R0 A
+A-1 A
+
+GOC END
+GOTO LOOP
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+*END
+
+
+LOADRPL 				% return to RPL
+@
